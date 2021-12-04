@@ -21,13 +21,13 @@ export default defineComponent({
 
     if (!currentUserStore.currentUser.id) {
       router.replace({ name: 'Login' })
-    } else if (currentUserStore.currentUser.faceRegistered) {
+    } else if (!currentUserStore.currentUser.faceRegistered) {
       router.replace({ name: 'RegisterFaces' })
     }
 
     const ownSmilePoint = ref(null)
     const smileMakerPoint = ref(null)
-    axios.get(`${process.env.VUE_APP_API_ROOT}/my_status`).then((res) => {
+    axios.get(`${process.env.VUE_APP_API_ROOT}/my_status?userId=${currentUserStore.currentUser.id}`).then((res) => {
       const data = res.data
       ownSmilePoint.value = data.own_smile_point
       smileMakerPoint.value = data.smile_maker_point

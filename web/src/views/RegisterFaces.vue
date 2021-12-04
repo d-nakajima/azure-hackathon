@@ -52,7 +52,7 @@ export default defineComponent({
       const data = await Promise.all(files.value.map(file => getBase64(file)))
       const body = { data, user_id: currentUserStore.currentUser.id }
       axios.post(`${process.env.VUE_APP_API_ROOT}/register_faces`, body).then(res => {
-        console.log(res)
+        router.replace({ name: 'Mypage' })
       })
     }
     return {

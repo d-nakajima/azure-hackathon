@@ -4,13 +4,12 @@ import { executeSql } from '../common/db-connecter'
 const SqlString = require('sqlString')
 
 const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<any> {
-    const res = await axios.get('https://google.com')
-    context.log(res)
     const userName = req.body.name || "daishi"
     const userToken = userName; // super low security
-    const user = (await executeSql(SqlString.format("SELECT * FROM users WHERE name = ?", userName)))[0]
+    const user = (await executeSql(SqlString.format("SELECT * FROM users WHERE name = ?", userName), context))[0]
+    context.log(`user: ${user}`)
     if (user == null) {
-        return createUser(userName).then(async newUser => {
+        return createUser(userName, context).then(async newUser => {
             context.res = {
                 body: {
                     message: `${userName} is created!`,
@@ -40,9 +39,9 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
     }
 };
 
-const createUser = async (userName:string) : Promise<any>  => {
-    const sql = SqlString.format("INSERT INTO users (name, updatedAt) OUTPUT Inserted.* VALUES (?, CURRENT_TIMESTAMP)", userName)
-    return executeSql(sql).then(insertedRecords => {
+const createUser = async (userName:string, context:Context) : Promise<any>  => {
+    const sql = SqlString.format("INSERT INTO users (name) OUTPUT Inserted.* VALUES (?)", userName)
+    return executeSql(sql, context).then(insertedRecords => {
         return insertedRecords[0]
     })
 }

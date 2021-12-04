@@ -1,3 +1,4 @@
+import { Context } from "@azure/functions"
 import { Connection, Request } from "tedious"
 
 const config = {
@@ -16,36 +17,37 @@ const config = {
   }
 };
 
-export const executeSql = async function (sql) : Promise<Array<any>> {
+export const executeSql = async function (sql:string, context:Context) : Promise<Array<any>> {
   const connection = new Connection(config);
-  connection.connect();
 
-  return new Promise((resolve, reject) => {
+  const res = new Promise<Array<any>>((resolve, reject) => {
     connection.on("connect", error => {
       if (error) {
-        console.log('Error occuerd on connection', error)
+        context.log('Error occuerd on connection', error)
         reject(error)
       } else {
-        const request = new Request(sql,
-          (err, _rowCount, rows) => {
-            if (err) {
-              console.log('Error occured on requesting', error)
-              console.error(err.message);
-            } else {
-              resolve(
-                rows.map(row => {
-                  const formattedRow = {}
-                  row.forEach(column => {
-                    formattedRow[column.metadata.colName] = column.value
-                  })
-                  return formattedRow
+        const request = new Request(sql, (err, _rowCount, rows) => {
+          if (err) {
+            context.log('Error occured on requesting', err)
+            context.log(err.message);
+            reject(err)
+          } else {
+            resolve(
+              rows.map(row => {
+                const formattedRow = {}
+                row.forEach(column => {
+                  formattedRow[column.metadata.colName] = column.value
                 })
-              )
-            }
+                return formattedRow
+              })
+            )
           }
-        )
+        })
         connection.execSql(request)
       }
     })
   })
+
+  connection.connect()
+  return res
 }
