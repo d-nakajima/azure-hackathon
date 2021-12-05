@@ -4,7 +4,7 @@
       <img class="mypage-logo" src="@/assets/images/logo.png" />
       <div class="mypage-data">
         <div class="mypage-data-title">あなたの得笑い度</div>
-        <div class="mypage-data-value">{{ smileMakerPoint?.toFixed(3) || 3.2810 }}</div>
+        <div class="mypage-data-value">{{ smileMakerPoint?.toFixed(3) }}</div>
       </div>
       <!-- <div class="mypage-data">
         <div class="mypage-data-item">あなたは</div>
