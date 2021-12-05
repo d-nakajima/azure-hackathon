@@ -62,6 +62,7 @@ export default defineComponent({
 .container {
   background: $logo-background;
   height: 100%;
+  width: 100%
 }
 .login {
   padding: 50px;

@@ -1,10 +1,12 @@
 <template>
-  <div>
-    <div>マイページ</div>
-    <div>
-      <div>ポイント</div>
-      <div>笑顔作成ポイント: {{ smileMakerPoint }}</div>
-      <div>自分の笑顔ポイント: {{ ownSmilePoint }}</div>
+  <div class="container">
+    <div class="mypage">
+      <div>マイページ</div>
+      <div>
+        <div>ポイント</div>
+        <div>笑顔作成ポイント: {{ smileMakerPoint }}</div>
+        <div>自分の笑顔ポイント: {{ ownSmilePoint }}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -19,11 +21,11 @@ export default defineComponent({
     const router = useRouter()
     const currentUserStore = inject(useCurrentUserKey) as CurrentUserStore
 
-    if (!currentUserStore.currentUser.id) {
-      router.replace({ name: 'Login' })
-    } else if (!currentUserStore.currentUser.faceRegistered) {
-      router.replace({ name: 'RegisterFaces' })
-    }
+    // if (!currentUserStore.currentUser.id) {
+    //   router.replace({ name: 'Login' })
+    // } else if (!currentUserStore.currentUser.faceRegistered) {
+    //   router.replace({ name: 'RegisterFaces' })
+    // }
 
     const ownSmilePoint = ref(null)
     const smileMakerPoint = ref(null)
@@ -44,5 +46,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-
+.container {
+  height: 100%;
+  padding: 50px;
+}
 </style>

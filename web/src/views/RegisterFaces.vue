@@ -1,11 +1,13 @@
 <template>
-  <div class="registerFaces">
-    <div>顔写真を登録してください</div>
-    <input type="file" accept="image/*" multiple @change="onImageChanged" />
-    <div class="preview">
-      <img class="preview-image" v-for="(imageUrl, i) in imageUrls" :key="i" :src="imageUrl" />
+  <div class="container">
+    <div class="registerFaces">
+      <div class="registerFaces-description">5~10枚の顔写真を登録してください</div>
+      <input class="registerFaces-input" type="file" accept="image/*" multiple @change="onImageChanged" />
+      <div class="registerFaces-preview">
+        <img class="registerFaces-preview-image" v-for="(imageUrl, i) in imageUrls" :key="i" :src="imageUrl" />
+      </div>
+      <button class="registerFaces-submitButton" @click="submit" :disabled="!canRegister" :class="{ active: canRegister }">送信する</button>
     </div>
-    <button class="submitButton" @click="submit" :disabled="!canRegister" :class="{ active: canRegister }">送信する</button>
   </div>
 </template>
 
@@ -66,17 +68,43 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.preview {
-  &-image {
-    width: 200px;
-    margin: 10px;
-  }
+.container {
+  background: $logo-background;
+  height: 100%;
+  width: 100%;
+  overflow: scroll;
 }
 
-.submitButton {
-  padding: 20px;
-  &.active {
-    background-color: rgb(69, 221, 69);
+.registerFaces {
+  padding: 50px;
+  &-description {
+    margin: 15px;
+  }
+  &-input {
+    margin: 15px;
+  }
+  &-preview {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    &-image {
+      width: 200px;
+      margin: 10px auto;
+    }
+  }
+  &-submitButton {
+    margin-top: 50px;
+    padding: 20px 40px;
+    display: inline-block;
+    border-radius: 10px;
+    background: $disable;
+    color: $gray;
+    &.active {
+      color: $black;
+      background: $button-background-active;
+      box-shadow: 1px 1px 2px $black;
+      pointer-events: inherit;
+    }
   }
 }
 </style>
