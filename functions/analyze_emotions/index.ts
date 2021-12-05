@@ -26,6 +26,8 @@ const buildEmotionUpdateSql = (emotionObjects) => {
 
 const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
     const requestBody = { person_group: "social_residence", image: req.body?.image }
+    context.log(requestBody)
+    context.log(req.body)
     const res = await axios.post(`${process.env.IMAGE_API_ENDPOINT}/Emotion_analysis?code=${process.env.EMOTION_ANALYSIS_TOKEN}`, requestBody)
     await executeSql(buildEmotionUpdateSql(res.data), context)
     context.res = {
