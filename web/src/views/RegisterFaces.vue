@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="registerFaces">
-      <div class="registerFaces-description">5~10枚の顔写真を登録してください</div>
+      <div class="registerFaces-description">5枚以上の顔写真を登録してください</div>
       <input class="registerFaces-input" type="file" accept="image/*" multiple @change="onImageChanged" />
       <div class="registerFaces-preview">
         <img class="registerFaces-preview-image" v-for="(imageUrl, i) in imageUrls" :key="i" :src="imageUrl" />
@@ -53,6 +53,8 @@ export default defineComponent({
 
     const onRegistering = ref(false)
     const submit = async () => {
+      if (!canRegister.value) return
+      if (onRegistering.value) return
       onRegistering.value = true
       if (!canRegister.value) return
       const data = await Promise.all(files.value.map(file => getBase64(file)))
