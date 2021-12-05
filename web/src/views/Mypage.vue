@@ -1,12 +1,17 @@
 <template>
   <div class="container">
     <div class="mypage">
-      <div>マイページ</div>
-      <div>
-        <div>ポイント</div>
-        <div>笑顔作成ポイント: {{ smileMakerPoint }}</div>
-        <div>自分の笑顔ポイント: {{ ownSmilePoint }}</div>
+      <img class="mypage-logo" src="@/assets/images/logo.png" />
+      <div class="mypage-data">
+        <div class="mypage-data-title">あなたの得笑い度</div>
+        <div class="mypage-data-value">{{ smileMakerPoint?.toFixed(3) || 3.2810 }}</div>
       </div>
+      <!-- <div class="mypage-data">
+        <div class="mypage-data-item">あなたは</div>
+        <div class="mypage-data-item">{{ smileMakerPoint }}</div>
+      </div>
+        <div>自分の笑顔ポイント: {{ ownSmilePoint }}</div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -47,7 +52,30 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .container {
+  background: $logo-background;
   height: 100%;
-  padding: 50px;
+  width: 100%;
+  overflow: scroll;
+}
+.mypage {
+  &-logo {
+    margin-top: 100px;
+    width: 80%;
+    max-width: 300px;
+  }
+  &-data {
+    margin-top: 50px;
+    &-title {
+      font-size: 24px;
+      color: $white;
+      font-weight: bold;
+    }
+    &-value {
+      margin: 20px;
+      font-size: 36px;
+      color: $white;
+      font-weight: bold;
+    }
+  }
 }
 </style>
