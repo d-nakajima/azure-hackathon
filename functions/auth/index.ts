@@ -1,10 +1,9 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions"
-import axios from "axios";
 import { executeSql } from '../common/db-connecter'
 const SqlString = require('sqlString')
 
 const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<any> {
-    const userName = req.body.name || "daishi"
+    const userName = req.body.name
     const userToken = userName; // super low security
     const user = (await executeSql(SqlString.format("SELECT * FROM users WHERE name = ?", userName), context))[0]
     context.log(`user: ${user}`)
