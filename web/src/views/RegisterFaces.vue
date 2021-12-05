@@ -6,7 +6,9 @@
       <div class="registerFaces-preview">
         <img class="registerFaces-preview-image" v-for="(imageUrl, i) in imageUrls" :key="i" :src="imageUrl" />
       </div>
-      <button class="registerFaces-submitButton" @click="submit" :disabled="!canRegister" :class="{ active: canRegister }">送信する</button>
+      <button class="registerFaces-submitButton" @click="submit" :disabled="!canRegister" :class="{ active: canRegister }">
+        {{ onRegistering ? '登録中...' : '送信する' }}
+      </button>
     </div>
   </div>
 </template>
@@ -49,19 +51,25 @@ export default defineComponent({
       return files.value.length >= 1
     })
 
+    const onRegistering = ref(false)
     const submit = async () => {
+      onRegistering.value = true
       if (!canRegister.value) return
       const data = await Promise.all(files.value.map(file => getBase64(file)))
       const body = { data, user_id: currentUserStore.currentUser.id }
       axios.post(`${process.env.VUE_APP_API_ROOT}/register_faces`, body).then(res => {
         router.replace({ name: 'Mypage' })
+      }).catch(() => {
+        window.alert('エラーが発生しました')
+        onRegistering.value = false
       })
     }
     return {
       imageUrls,
       onImageChanged,
       canRegister,
-      submit
+      submit,
+      onRegistering
     }
   }
 })
