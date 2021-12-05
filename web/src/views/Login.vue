@@ -41,7 +41,6 @@ export default defineComponent({
       submitting.value = true
       axios.post(`${process.env.VUE_APP_API_ROOT}/auth`, { name }).then(res => {
         currentUserStore.setCurrentUser(res.data.user as User)
-        submitting.value = false
         redirectByStatus()
       })
     }
